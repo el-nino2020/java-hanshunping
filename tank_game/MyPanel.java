@@ -11,8 +11,7 @@ public class MyPanel extends JPanel {
         super.paint(g);
         //paint background to black
         g.fillRect(0, 0, 1000, 750);
-        drawTank(mt.getX(), mt.getY(), g, 0, 0);
-        drawTank(500, 450, g, 0, 1);
+        drawTank(mt.getX(), mt.getY(), g, 3, 0);
     }
 
     public MyPanel() {
@@ -43,6 +42,27 @@ public class MyPanel extends JPanel {
                 g.fill3DRect(x + 10, y + 10, 20, 40, false);
                 g.fillOval(x + 10, y + 20, 20, 20);
                 g.drawLine(x + 20, y, x + 20, y + 30);
+                break;
+            case 1://down
+                g.fill3DRect(x, y, 10, 60, false);
+                g.fill3DRect(x + 30, y, 10, 60, false);
+                g.fill3DRect(x + 10, y + 10, 20, 40, false);
+                g.fillOval(x + 10, y + 20, 20, 20);
+                g.drawLine(x + 20, y + 60, x + 20, y + 30);
+                break;
+            case 2://left
+                g.fill3DRect(x, y, 60, 10, false);
+                g.fill3DRect(x, y + 30, 60, 10, false);
+                g.fill3DRect(x + 10, y + 10, 40, 20, false);
+                g.fillOval(x + 20, y + 10, 20, 20);
+                g.drawLine(x + 30, y + 20, x, y + 20);
+                break;
+            case 3://right
+                g.fill3DRect(x, y, 60, 10, false);
+                g.fill3DRect(x, y + 30, 60, 10, false);
+                g.fill3DRect(x + 10, y + 10, 40, 20, false);
+                g.fillOval(x + 20, y + 10, 20, 20);
+                g.drawLine(x + 30, y + 20, x + 60, y + 20);
                 break;
         }
     }
