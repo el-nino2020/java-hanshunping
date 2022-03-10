@@ -4,9 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener {
     MyTank mt;
+    Vector<EnemyTank> enemyTanks;
 
     @Override
     public void paint(Graphics g) {
@@ -14,11 +16,22 @@ public class MyPanel extends JPanel implements KeyListener {
         //paint background to black
         g.fillRect(0, 0, 1000, 750);
         drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
+        for (EnemyTank e : enemyTanks) {
+            drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
+        }
+
+
     }
 
     public MyPanel() {
         mt = new MyTank(100, 100);
         //mt.setSpeed(1);
+        enemyTanks = new Vector<>();
+        for (int i = 0; i < 3; i++) {
+            EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
+            enemyTank.setDirection(1);
+            enemyTanks.add(enemyTank);
+        }
     }
 
     /**
