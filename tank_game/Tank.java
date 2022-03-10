@@ -1,14 +1,33 @@
 package tank_game;
 
 public class Tank {
+    //left up point (x, y) of the tank
     private int x;
     private int y;
-    //0 up, 1 down, 2 left, 3 right
-    private int direction;
+
+    private int direction;//0 up, 1 down, 2 left, 3 right
+    private int speed = 1;//speed of the tank
+
 
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
+    }
+
+    public void moveUp() {
+        y -= speed;
+    }
+
+    public void moveDown() {
+        y += speed;
+    }
+
+    public void moveLeft() {
+        x -= speed;
+    }
+
+    public void moveRight() {
+        x += speed;
     }
 
     public int getDirection() {
@@ -17,6 +36,14 @@ public class Tank {
 
     public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public int getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 
     public int getX() {

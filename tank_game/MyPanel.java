@@ -2,20 +2,23 @@ package tank_game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class MyPanel extends JPanel {
-    MyTank mt = null;
+public class MyPanel extends JPanel implements KeyListener {
+    MyTank mt;
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         //paint background to black
         g.fillRect(0, 0, 1000, 750);
-        drawTank(mt.getX(), mt.getY(), g, 3, 0);
+        drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
     }
 
     public MyPanel() {
         mt = new MyTank(100, 100);
+        //mt.setSpeed(1);
     }
 
     /**
@@ -67,4 +70,34 @@ public class MyPanel extends JPanel {
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        int keyCode = e.getKeyCode();
+
+        if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
+            mt.setDirection(0);
+            mt.moveUp();
+        } else if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
+            mt.setDirection(1);
+            mt.moveDown();
+        } else if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
+            mt.setDirection(2);
+            mt.moveLeft();
+        } else if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
+            mt.setDirection(3);
+            mt.moveRight();
+        }
+        repaint();
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
 }
