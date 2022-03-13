@@ -8,7 +8,7 @@ import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener, Runnable {
     private MyTank mt;
-    private Vector<EnemyTank> enemyTanks;
+    private Vector<EnemyTank> enemyTanks = new Vector<>();
 
     @Override
     public void paint(Graphics g) {
@@ -17,14 +17,29 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, 1000, 750);
 
+        //画己方坦克
         drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
-        for (EnemyTank e : enemyTanks) {
-            drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
-        }
-
-        if (mt.getBullet() != null && mt.getBullet().isLive() ) {
+        //画己方子弹
+        if (mt.getBullet() != null && mt.getBullet().isLive()) {
             g.setColor(Color.WHITE);
             g.fillRect(mt.getBullet().getX(), mt.getBullet().getY(), 2, 2);
+        }
+
+        for (EnemyTank e : enemyTanks) {
+            //画敌方坦克
+            drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
+            //画敌方子弹
+            for (int i = 0; i < e.bullets.size(); i++) {
+                Bullet bullet = e.bullets.get(i);
+                if (!bullet.isLive()) {
+                    e.bullets.remove(i);
+                    --i;//不能跳过原先的第(i+1)个元素
+                    continue;
+                }
+                g.setColor(Color.WHITE);
+                g.fillRect(bullet.getX(), bullet.getY(), 2, 2);
+            }
+
         }
 
 
@@ -33,10 +48,17 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public MyPanel() {
         mt = new MyTank(100, 100);
         //mt.setSpeed(1);
-        enemyTanks = new Vector<>();
+
+
         for (int i = 0; i < 3; i++) {
-            EnemyTank enemyTank = new EnemyTank(100 * (i + 1), 0);
+            int x = 100 * (i + 1), y = 0;
+            EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
             enemyTank.setDirection(1);
+
+            //每个坦克初始化一颗子弹
+            enemyTank.bullets.add(new Bullet(x + 20, y + 60, 1));
+            new Thread(enemyTank.bullets.get(0)).start();
+
             enemyTanks.add(enemyTank);
         }
     }

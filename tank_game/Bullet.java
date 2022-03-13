@@ -15,7 +15,7 @@ public class Bullet implements Runnable {
 
     /**
      * 该方法被调用后，
-     * 子弹被发射后，其行为如下：
+     * 子弹被发射，其行为如下：
      * 从(x, y)点开始，朝着direction，以speed移动。直至与边界碰撞
      */
     @Override
