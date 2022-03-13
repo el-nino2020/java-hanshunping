@@ -8,6 +8,7 @@ public class Tank {
     private int direction;//0 up, 1 down, 2 left, 3 right
     private int speed = 1;//speed of the tank
 
+    private boolean isLive=true;
 
     public Tank(int x, int y) {
         this.x = x;
@@ -62,5 +63,11 @@ public class Tank {
         this.y = y;
     }
 
+    public boolean isLive() {
+        return isLive;
+    }
 
+    public void setLive(boolean live) {
+        isLive = live;
+    }
 }

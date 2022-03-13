@@ -26,6 +26,7 @@ public class Bullet implements Runnable {
             } catch (InterruptedException e) {
                 System.out.println("sleep() in Bullet.run() is interrupted");
             }
+
             switch (direction) {
                 case 0://up
                     y -= speed;
@@ -40,14 +41,16 @@ public class Bullet implements Runnable {
                     x += speed;
                     break;
             }
+            int hashCode = this.hashCode();
             //与边界碰撞
-            if (!(0 <= x && x < 1000 && 0 <= y && y < 750)) {
+            if (!(0 <= x && x < 1000 && 0 <= y && y < 750 && isLive)) {
                 isLive = false;
+                System.out.println("子弹@" + hashCode + "消亡");
                 break;
             }
-
+            //显示子弹信息，用于测试
+            System.out.println("子弹@" + hashCode + ": (" + x + ", " + y + ")");
         }
-
     }
 
     public int getX() {

@@ -25,15 +25,23 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             g.fillRect(mt.getBullet().getX(), mt.getBullet().getY(), 2, 2);
         }
 
-        for (EnemyTank e : enemyTanks) {
+        for (int j = 0; j < enemyTanks.size(); ++j) {
+            EnemyTank e = enemyTanks.get(j);
             //画敌方坦克
-            drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
-            //画敌方子弹
+            if (e.isLive()) {
+                drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
+            }
+            //坦克没了，它的留下的子弹也没了，这个坦克对象就彻底没用了
+            if (!e.isLive() && e.bullets.isEmpty()) {
+                enemyTanks.remove(j--);
+                continue;
+            }
+            //画敌方子弹，
+            // 坦克死了，子弹并不会立刻消失
             for (int i = 0; i < e.bullets.size(); i++) {
                 Bullet bullet = e.bullets.get(i);
                 if (!bullet.isLive()) {
-                    e.bullets.remove(i);
-                    --i;//不能跳过原先的第(i+1)个元素
+                    e.bullets.remove(i--);  //不能跳过原先的第(i+1)个元素
                     continue;
                 }
                 g.setColor(Color.WHITE);
@@ -112,6 +120,37 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         }
     }
 
+    /**
+     * 子弹是否击中某台坦克
+     * 子弹与坦克应该属于不同阵营
+     */
+    //由于不知道某颗子弹何时会击中某辆坦克，应放在run方法中判断
+    private void hitTank(Bullet bullet, Tank tank) {
+
+        if (!tank.isLive()) {
+            return;
+        }
+        switch (tank.getDirection()) {
+            case 0:
+            case 1:
+                if (tank.getX() < bullet.getX() && bullet.getX() < tank.getX() + 40
+                        && tank.getY() < bullet.getY() && bullet.getY() < tank.getY() + 60) {
+                    tank.setLive(false);
+                    bullet.setLive(false);
+                }
+                break;
+            case 2:
+            case 3:
+                if (tank.getX() < bullet.getX() && bullet.getX() < tank.getX() + 60
+                        && tank.getY() < bullet.getY() && bullet.getY() < tank.getY() + 40) {
+                    tank.setLive(false);
+                    bullet.setLive(false);
+                }
+                break;
+
+        }
+    }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -156,6 +195,12 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            if (mt.getBullet() != null && mt.getBullet().isLive()) {
+                for (EnemyTank e : enemyTanks) {
+                    hitTank(mt.getBullet(), e);
+                }
+            }
+
             repaint();
         }
     }
