@@ -6,18 +6,25 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
 
-public class MyPanel extends JPanel implements KeyListener {
-    MyTank mt;
-    Vector<EnemyTank> enemyTanks;
+public class MyPanel extends JPanel implements KeyListener, Runnable {
+    private MyTank mt;
+    private Vector<EnemyTank> enemyTanks;
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         //paint background to black
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, 1000, 750);
+
         drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
         for (EnemyTank e : enemyTanks) {
             drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
+        }
+
+        if (mt.getBullet() != null && mt.getBullet().isLive() ) {
+            g.setColor(Color.WHITE);
+            g.fillRect(mt.getBullet().getX(), mt.getBullet().getY(), 2, 2);
         }
 
 
@@ -41,7 +48,7 @@ public class MyPanel extends JPanel implements KeyListener {
      * @param direction 坦克朝向
      * @param type      敌方或是自己
      */
-    public void drawTank(int x, int y, Graphics g, int direction, int type) {
+    private void drawTank(int x, int y, Graphics g, int direction, int type) {
         switch (type) {
             case 0://self
                 g.setColor(Color.CYAN);
@@ -83,6 +90,7 @@ public class MyPanel extends JPanel implements KeyListener {
         }
     }
 
+
     @Override
     public void keyTyped(KeyEvent e) {
 
@@ -105,6 +113,10 @@ public class MyPanel extends JPanel implements KeyListener {
             mt.setDirection(3);
             mt.moveRight();
         }
+
+        if (keyCode == KeyEvent.VK_J) {
+            mt.shot();
+        }
         repaint();
 
     }
@@ -112,5 +124,17 @@ public class MyPanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            repaint();
+        }
     }
 }

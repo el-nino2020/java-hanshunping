@@ -1,67 +1,42 @@
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
-public class Test extends JFrame {
-    private MyPanel mp = null;
 
+public class Test {
     public static void main(String[] args) {
-        new Test();
-    }
-
-    Test() {
-        mp = new MyPanel();
-        this.add(mp);
-        this.addKeyListener(mp); //使JFrame对象可以监听mp面板上发生的键盘事件
-        this.setSize(200, 200);
-        this.setVisible(true);
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        Account account = new Account();
+        Thread thread = new Thread(account);
+        thread.setName("A");
+        Thread thread2 = new Thread(account);
+        thread2.setName("B");
+        thread.start();
+        thread2.start();
     }
 }
 
-//KeyListener是监听器，用于监听键盘事件
-class MyPanel extends JPanel implements KeyListener {
-    private int x = 10;
-    private int y = 10;
+class Account implements Runnable {
+    private int money = 10000;
+    private boolean loop = true;
 
-
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        g.fillOval(x, y, 20, 20);
-    }
-
-    //字符输出时触发该方法
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-    //按下按键时触发该方法
-    @Override
-    public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            //边界检查
-            if (y < 200 - 10)//面板的宽度
-                ++y;
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            if (y > 0)
-                --y;
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            if (x > 0)
-                --x;
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            if (x < 200 - 10)//面板的长度
-                ++x;
+    private synchronized void withdraw() {
+        if (money < 1000) {
+            loop = false;
+            System.out.println(Thread.currentThread().getName() + " 余额不足，无法取钱");
+            return;
         }
-        repaint();//用于再次执行paint()方法，更新球的位置
+        System.out.println(Thread.currentThread().getName()
+                + "取出" + 1000 + "元, 还剩" + (money -= 1000) + "元");
 
     }
 
-    //松开按键时触发该方法
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void run() {
+        while (loop) {
+            withdraw();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 }
