@@ -10,6 +10,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private MyTank mt;
     private Vector<EnemyTank> enemyTanks = new Vector<>();
     private Vector<Bomb> bombs = new Vector<>();
+    private int enemyNum = 3;
 
     @Override
     public void paint(Graphics g) {
@@ -72,7 +73,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         //mt.setSpeed(1);
 
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < enemyNum; i++) {
             int x = 100 * (i + 1), y = 0;
             EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
             enemyTank.setDirection(1);
@@ -83,9 +84,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
             enemyTanks.add(enemyTank);
 
-            //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
-            new Bomb(0,0);
+            new Thread(enemyTank).start();
+
         }
+
+
+        //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
+        new Bomb(0, 0);
     }
 
     /**
