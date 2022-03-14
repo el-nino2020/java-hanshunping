@@ -6,7 +6,7 @@ public class Tank {
     private int y;
 
     private int direction;//0 up, 1 down, 2 left, 3 right
-    private int speed = 1;//speed of the tank
+    private int speed = 5;//speed of the tank
 
     private boolean isLive=true;
 

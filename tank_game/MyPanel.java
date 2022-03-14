@@ -82,6 +82,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             new Thread(enemyTank.bullets.get(0)).start();
 
             enemyTanks.add(enemyTank);
+
+            //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
+            new Bomb(0,0);
         }
     }
 
