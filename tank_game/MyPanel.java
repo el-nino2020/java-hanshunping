@@ -12,19 +12,27 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private Vector<Bomb> bombs = new Vector<>();
     private int enemyNum = 3;
 
+    public static int backgroundWidth = 1000;
+    public static int backgroundHeight = 750;
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
         //paint background to black
         g.setColor(Color.BLACK);
-        g.fillRect(0, 0, 1000, 750);
+        g.fillRect(0, 0, backgroundWidth, backgroundHeight);
 
         //画己方坦克
         drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
         //画己方子弹
-        if (mt.getBullet() != null && mt.getBullet().isLive()) {
-            g.setColor(Color.WHITE);
-            g.fillRect(mt.getBullet().getX(), mt.getBullet().getY(), 2, 2);
+        for (int i = 0; i < mt.bullets.size(); ++i) {
+            Bullet bullet = mt.bullets.get(i);
+            if (bullet.isLive()) {
+                g.setColor(Color.WHITE);
+                g.fillRect(bullet.getX(), bullet.getY(), 2, 2);
+            } else {
+                mt.bullets.remove(i--);
+            }
         }
 
         for (int j = 0; j < enemyTanks.size(); ++j) {
@@ -188,16 +196,26 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
             mt.setDirection(0);
-            mt.moveUp();
+            if (mt.getY() > 0) {
+                mt.moveUp();
+            }
         } else if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
             mt.setDirection(1);
-            mt.moveDown();
+            if (mt.getY() + 60 < backgroundHeight) {
+                mt.moveDown();
+            }
         } else if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
             mt.setDirection(2);
-            mt.moveLeft();
+            if (mt.getX() > 0) {
+                mt.moveLeft();
+
+            }
         } else if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
             mt.setDirection(3);
-            mt.moveRight();
+
+            if (mt.getX() + 60 < backgroundWidth) {
+                mt.moveRight();
+            }
         }
 
         if (keyCode == KeyEvent.VK_J) {
@@ -221,9 +239,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                 e.printStackTrace();
             }
 
-            if (mt.getBullet() != null && mt.getBullet().isLive()) {
-                for (EnemyTank e : enemyTanks) {
-                    hitTank(mt.getBullet(), e);
+            for (Bullet bullet : mt.bullets) {
+                if (bullet.isLive()) {
+                    for (EnemyTank e : enemyTanks) {
+                        hitTank(bullet, e);
+                    }
                 }
             }
 

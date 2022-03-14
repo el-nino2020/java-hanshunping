@@ -3,7 +3,9 @@ package tank_game;
 import javax.swing.*;
 
 public class TankGame01 extends JFrame {
-    private MyPanel mp ;
+    public static int frameWidth = 1000;
+    public static int frameHeight = 750;
+    private MyPanel mp;
 
     public static void main(String[] args) {
         new TankGame01();
@@ -15,7 +17,7 @@ public class TankGame01 extends JFrame {
 
         this.add(mp);
         this.addKeyListener(mp);
-        this.setSize(1000, 750);
+        this.setSize(frameWidth, frameHeight);
         this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }

@@ -4,7 +4,7 @@ public class Bullet implements Runnable {
     private int x;
     private int y;
     private int direction;
-    private int speed = 3;
+    private int speed = 10;
     private boolean isLive = true;
 
     public Bullet(int x, int y, int direction) {
@@ -43,7 +43,7 @@ public class Bullet implements Runnable {
             }
             int hashCode = this.hashCode();
             //与边界碰撞
-            if (!(0 <= x && x < 1000 && 0 <= y && y < 750 && isLive)) {
+            if (!(0 <= x && x < MyPanel.backgroundWidth && 0 <= y && y < MyPanel.backgroundHeight && isLive)) {
                 isLive = false;
                 System.out.println("子弹@" + hashCode + "消亡");
                 break;

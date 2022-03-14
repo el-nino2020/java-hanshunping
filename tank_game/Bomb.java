@@ -10,7 +10,7 @@ public class Bomb {
     private int life = 12;//炸弹的生命周期
     private boolean isLive = true;
 
-    //居然用到了静态代码块,すごい
+    //居然会用到静态代码块,すごい
     //预加载炸弹效果图片
     static {
         bombEffects = new Image[6];

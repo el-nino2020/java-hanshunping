@@ -19,25 +19,41 @@ public class EnemyTank extends Tank implements Runnable {
                 switch (getDirection()) {
                     case 0:
                         for (int i = 0; i < pace; ++i) {
-                            moveUp();
+                            if (getY() > 0) {
+                                moveUp();
+                            }else {
+                                break;
+                            }
                             Thread.sleep(50);
                         }
                         break;
                     case 1:
                         for (int i = 0; i < pace; ++i) {
-                            moveDown();
+                            if (getY() + 60 < MyPanel.backgroundHeight) {
+                                moveDown();
+                            }else{
+                                break;
+                            }
                             Thread.sleep(50);
                         }
                         break;
                     case 2:
                         for (int i = 0; i < pace; ++i) {
-                            moveLeft();
+                            if (getX() > 0) {
+                                moveLeft();
+                            }else {
+                                break;
+                            }
                             Thread.sleep(50);
                         }
                         break;
                     case 3:
                         for (int i = 0; i < pace; ++i) {
-                            moveRight();
+                            if (getX() + 60 < MyPanel.backgroundWidth) {
+                                moveRight();
+                            }else {
+                                break;
+                            }
                             Thread.sleep(50);
                         }
                         break;
