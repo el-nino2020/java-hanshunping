@@ -1,60 +1,59 @@
 package tank_game;
 
-import java.util.Vector;
-
 public class EnemyTank extends Tank implements Runnable {
-
-    Vector<Bullet> bullets = new Vector<>();
 
     public EnemyTank(int x, int y) {
         super(x, y);
     }
 
-
     @Override
     public void run() {
         try {
             while (isLive()) {
-                int pace = (int) (Math.random() * 20);
+                int pace = (int) (Math.random() * 40);
                 switch (getDirection()) {
                     case 0:
                         for (int i = 0; i < pace; ++i) {
                             if (getY() > 0) {
                                 moveUp();
-                            }else {
+                            } else {
                                 break;
                             }
                             Thread.sleep(50);
+                            shot();
                         }
                         break;
                     case 1:
                         for (int i = 0; i < pace; ++i) {
                             if (getY() + 60 < MyPanel.backgroundHeight) {
                                 moveDown();
-                            }else{
+                            } else {
                                 break;
                             }
                             Thread.sleep(50);
+                            shot();
                         }
                         break;
                     case 2:
                         for (int i = 0; i < pace; ++i) {
                             if (getX() > 0) {
                                 moveLeft();
-                            }else {
+                            } else {
                                 break;
                             }
                             Thread.sleep(50);
+                            shot();
                         }
                         break;
                     case 3:
                         for (int i = 0; i < pace; ++i) {
                             if (getX() + 60 < MyPanel.backgroundWidth) {
                                 moveRight();
-                            }else {
+                            } else {
                                 break;
                             }
                             Thread.sleep(50);
+                            shot();
                         }
                         break;
 

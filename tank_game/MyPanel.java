@@ -71,7 +71,6 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             bomb.lifeDown();
             g.drawImage(image, bomb.getX(), bomb.getY(),
                     60, 60, this);
-
         }
 
     }
@@ -86,19 +85,13 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
             enemyTank.setDirection(1);
 
-            //每个坦克初始化一颗子弹
-            enemyTank.bullets.add(new Bullet(x + 20, y + 60, 1));
-            new Thread(enemyTank.bullets.get(0)).start();
-
             enemyTanks.add(enemyTank);
 
             new Thread(enemyTank).start();
 
         }
 
-
         //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
-        new Bomb(0, 0);
     }
 
     /**
