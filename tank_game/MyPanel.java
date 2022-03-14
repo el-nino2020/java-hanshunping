@@ -17,7 +17,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public static int backgroundHeight = 750;
 
     public MyPanel() {
-        mt = new MyTank(100, 100);
+        mt = new MyTank(500, 500);
 
         for (int i = 0; i < enemyNum; i++) {
             int x = 100 * (i + 1), y = 0;
@@ -43,7 +43,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.fillRect(0, 0, backgroundWidth, backgroundHeight);
 
         //画己方坦克
-        drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
+        if (mt.isLive()) {
+            drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
+        }
         //画己方子弹
         drawBullets(g, mt.bullets);
 
@@ -160,7 +162,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     //由于不知道某颗子弹何时会击中某辆坦克，应放在run方法中判断
     private void hitTank(Bullet bullet, Tank tank) {
 
-        if (!tank.isLive()) {
+        if (!tank.isLive() || !bullet.isLive()) {
             return;
         }
         switch (tank.getDirection()) {
@@ -197,6 +199,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public void keyPressed(KeyEvent e) {
         int keyCode = e.getKeyCode();
 
+        if (!mt.isLive())
+            return;
+
         if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
             mt.setDirection(0);
             if (mt.getY() > 0) {
@@ -219,11 +224,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             if (mt.getX() + 60 < backgroundWidth) {
                 mt.moveRight();
             }
-        }
-
-        if (keyCode == KeyEvent.VK_J) {
+        } else if (keyCode == KeyEvent.VK_J) {
             mt.shot();
         }
+
         repaint();
 
     }
@@ -242,6 +246,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                 e.printStackTrace();
             }
 
+            //己方子弹击中敌方坦克
             for (Bullet bullet : mt.bullets) {
                 if (bullet.isLive()) {
                     for (EnemyTank e : enemyTanks) {
@@ -249,6 +254,14 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     }
                 }
             }
+
+            //敌方子弹击中己方坦克
+            for (EnemyTank enemyTank : enemyTanks) {
+                for (Bullet bullet : enemyTank.bullets) {
+                    hitTank(bullet, mt);
+                }
+            }
+
 
             repaint();
         }

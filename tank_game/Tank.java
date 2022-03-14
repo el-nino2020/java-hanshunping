@@ -10,11 +10,11 @@ public class Tank {
     private int direction;//0 up, 1 down, 2 left, 3 right
     private int speed = 2;//speed of the tank
 
-    private boolean isLive=true;
+    private boolean isLive = true;
 
     Vector<Bullet> bullets = new Vector<>();
     private long lastShotTime = 0;//上一次子弹发射的时间
-    private long shotPeriod = 500;//两次子弹发射间隔，单位是毫秒
+    private long shotPeriod = 1000;//两次子弹发射间隔，单位是毫秒
 
     public Tank(int x, int y) {
         this.x = x;
