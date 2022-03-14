@@ -7,6 +7,7 @@ import java.awt.event.KeyListener;
 import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener, Runnable {
+
     private MyTank mt;
     private Vector<EnemyTank> enemyTanks = new Vector<>();
     private Vector<Bomb> bombs = new Vector<>();
@@ -15,70 +16,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public static int backgroundWidth = 1000;
     public static int backgroundHeight = 750;
 
-    @Override
-    public void paint(Graphics g) {
-        super.paint(g);
-        //paint background to black
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, backgroundWidth, backgroundHeight);
-
-        //画己方坦克
-        drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
-        //画己方子弹
-        for (int i = 0; i < mt.bullets.size(); ++i) {
-            Bullet bullet = mt.bullets.get(i);
-            if (bullet.isLive()) {
-                g.setColor(Color.WHITE);
-                g.fillRect(bullet.getX(), bullet.getY(), 2, 2);
-            } else {
-                mt.bullets.remove(i--);
-            }
-        }
-
-        for (int j = 0; j < enemyTanks.size(); ++j) {
-            EnemyTank e = enemyTanks.get(j);
-            //画敌方坦克
-            if (e.isLive()) {
-                drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
-            }
-            //坦克没了，它的留下的子弹也没了，这个坦克对象就彻底没用了
-            if (!e.isLive() && e.bullets.isEmpty()) {
-                enemyTanks.remove(j--);
-                continue;
-            }
-            //画敌方子弹，
-            // 坦克死了，子弹并不会立刻消失
-            for (int i = 0; i < e.bullets.size(); i++) {
-                Bullet bullet = e.bullets.get(i);
-                if (!bullet.isLive()) {
-                    e.bullets.remove(i--);  //不能跳过原先的第(i+1)个元素
-                    continue;
-                }
-                g.setColor(Color.WHITE);
-                g.fillRect(bullet.getX(), bullet.getY(), 2, 2);
-            }
-
-        }
-
-        //画炸弹
-        for (int i = 0; i < bombs.size(); ++i) {
-            Bomb bomb = bombs.get(i);
-            if (!bomb.isLive()) {
-                bombs.remove(i--);
-                continue;
-            }
-            Image image = bomb.getBombEffectImage();
-            bomb.lifeDown();
-            g.drawImage(image, bomb.getX(), bomb.getY(),
-                    60, 60, this);
-        }
-
-    }
-
     public MyPanel() {
         mt = new MyTank(100, 100);
-        //mt.setSpeed(1);
-
 
         for (int i = 0; i < enemyNum; i++) {
             int x = 100 * (i + 1), y = 0;
@@ -92,6 +31,77 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         }
 
         //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
+        new Bomb(0, 0);
+    }
+
+
+    @Override
+    public void paint(Graphics g) {
+        super.paint(g);
+        //paint background to black
+        g.setColor(Color.BLACK);
+        g.fillRect(0, 0, backgroundWidth, backgroundHeight);
+
+        //画己方坦克
+        drawTank(mt.getX(), mt.getY(), g, mt.getDirection(), 0);
+        //画己方子弹
+        drawBullets(g, mt.bullets);
+
+        for (int j = 0; j < enemyTanks.size(); ++j) {
+            EnemyTank e = enemyTanks.get(j);
+            //画敌方坦克
+            if (e.isLive()) {
+                drawTank(e.getX(), e.getY(), g, e.getDirection(), 1);
+            }
+            //坦克没了，它的留下的子弹也没了，这个坦克对象才彻底没用
+            if (!e.isLive() && e.bullets.isEmpty()) {
+                enemyTanks.remove(j--);
+                continue;
+            }
+            //画敌方子弹，
+            // 坦克死了，子弹并不会立刻消失
+            drawBullets(g, e.bullets);
+
+        }
+
+        drawBomb(g);
+
+    }
+
+    /**
+     * @param bullets 某个坦克拥有的子弹集合;
+     *                画出该子弹集合中的所有子弹，
+     *                并删除生命周期消亡的子弹
+     */
+    private void drawBullets(Graphics g, Vector<Bullet> bullets) {
+        for (int i = 0; i < bullets.size(); ++i) {
+            Bullet bullet = bullets.get(i);
+            if (bullet.isLive()) {
+                g.setColor(Color.WHITE);
+                g.fillRect(bullet.getX(), bullet.getY(), 2, 2);
+            } else {
+                bullets.remove(i--);
+            }
+        }
+    }
+
+    /**
+     * 画出屏幕上应该有的所有炸弹，
+     * 并删除生命周期结束的炸弹
+     */
+    private void drawBomb(Graphics g) {
+        //画炸弹
+        for (int i = 0; i < bombs.size(); ++i) {
+            Bomb bomb = bombs.get(i);
+            if (!bomb.isLive()) {
+                bombs.remove(i--);
+                continue;
+            }
+            Image image = bomb.getBombEffectImage();
+            bomb.lifeDown();
+            g.drawImage(image, bomb.getX(), bomb.getY(),
+                    60, 60, this);
+        }
     }
 
     /**
