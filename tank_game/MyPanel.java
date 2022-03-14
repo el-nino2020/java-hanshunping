@@ -9,6 +9,7 @@ import java.util.Vector;
 public class MyPanel extends JPanel implements KeyListener, Runnable {
     private MyTank mt;
     private Vector<EnemyTank> enemyTanks = new Vector<>();
+    private Vector<Bomb> bombs = new Vector<>();
 
     @Override
     public void paint(Graphics g) {
@@ -50,6 +51,19 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
         }
 
+        //画炸弹
+        for (int i = 0; i < bombs.size(); ++i) {
+            Bomb bomb = bombs.get(i);
+            if (!bomb.isLive()) {
+                bombs.remove(i--);
+                continue;
+            }
+            Image image = bomb.getBombEffectImage();
+            bomb.lifeDown();
+            g.drawImage(image, bomb.getX(), bomb.getY(),
+                    60, 60, this);
+
+        }
 
     }
 
@@ -137,6 +151,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                         && tank.getY() < bullet.getY() && bullet.getY() < tank.getY() + 60) {
                     tank.setLive(false);
                     bullet.setLive(false);
+                    bombs.add(new Bomb(tank.getX(), tank.getY()));
                 }
                 break;
             case 2:
@@ -145,6 +160,8 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                         && tank.getY() < bullet.getY() && bullet.getY() < tank.getY() + 40) {
                     tank.setLive(false);
                     bullet.setLive(false);
+                    bombs.add(new Bomb(tank.getX(), tank.getY()));
+
                 }
                 break;
 
@@ -195,6 +212,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
             if (mt.getBullet() != null && mt.getBullet().isLive()) {
                 for (EnemyTank e : enemyTanks) {
                     hitTank(mt.getBullet(), e);
