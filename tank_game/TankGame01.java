@@ -3,8 +3,8 @@ package tank_game;
 import javax.swing.*;
 
 public class TankGame01 extends JFrame {
-    public static int frameWidth = 1000;
-    public static int frameHeight = 750;
+    public static final int frameWidth = 1000;
+    public static final int frameHeight = 750;
     private MyPanel mp;
 
     public static void main(String[] args) {

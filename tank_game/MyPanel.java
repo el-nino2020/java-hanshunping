@@ -11,24 +11,28 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private MyTank mt;
     private Vector<EnemyTank> enemyTanks = new Vector<>();
     private Vector<Bomb> bombs = new Vector<>();
-    private int enemyNum = 3;
+    private int enemyNum = 10;
 
-    public static int backgroundWidth = 1000;
-    public static int backgroundHeight = 750;
+    //panel和frame的大小如果设置相等，实际上前者会更大，导致坦克可以运动出边界
+    //因此需要人为调小一点——在别的显示器上也许没有问题
+    public static final int backgroundWidth = TankGame01.frameWidth - 20;
+    public static final int backgroundHeight = TankGame01.frameHeight - 40;
 
     public MyPanel() {
         mt = new MyTank(500, 500);
 
         for (int i = 0; i < enemyNum; i++) {
-            int x = 100 * (i + 1), y = 0;
+            int x = (int) (Math.random() * backgroundWidth),
+                    y = (int) (Math.random() * (backgroundHeight / 3));
             EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
             enemyTank.setDirection(1);
-
+            enemyTank.setEnemyTanks(enemyTanks);
             enemyTanks.add(enemyTank);
 
             new Thread(enemyTank).start();
 
         }
+
 
         //执行Bomb类信息的预加载，不然第一次发生爆炸效果可能不成功
         new Bomb(0, 0);
@@ -245,20 +249,25 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             //己方子弹击中敌方坦克
             for (Bullet bullet : mt.bullets) {
                 if (bullet.isLive()) {
-                    for (EnemyTank e : enemyTanks) {
-                        hitTank(bullet, e);
+                    for (int i = 0; i < enemyTanks.size(); ++i) {
+                        EnemyTank enemyTank = enemyTanks.get(i);
+                        hitTank(bullet, enemyTank);
                     }
                 }
             }
 
+            //不是我不想用迭代器循环或者增强for，
+            //使用这两种循环方式，会抛出ConcurrentModificationException异常
+            //详细原理看这个链接：https://www.cnblogs.com/dolphin0520/p/3933551.html
+            //解决的方法，就是用普通的for循环，哎。。。。
             //敌方子弹击中己方坦克
-            for (EnemyTank enemyTank : enemyTanks) {
-                for (Bullet bullet : enemyTank.bullets) {
-                    hitTank(bullet, mt);
+            for (int i = 0; i < enemyTanks.size(); ++i) {
+                EnemyTank enemyTank = enemyTanks.get(i);
+                for (int j = 0; j < enemyTank.bullets.size(); ++j) {
+                    hitTank(enemyTank.bullets.get(j), mt);
                 }
             }
 

@@ -16,6 +16,7 @@ public class Tank {
     private long lastShotTime = 0;//上一次子弹发射的时间
     private long shotPeriod = 1000;//两次子弹发射间隔，单位是毫秒
 
+
     public Tank(int x, int y) {
         this.x = x;
         this.y = y;
@@ -109,4 +110,5 @@ public class Tank {
     public void setShotPeriod(long shotPeriod) {
         this.shotPeriod = shotPeriod;
     }
+
 }

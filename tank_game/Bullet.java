@@ -45,11 +45,11 @@ public class Bullet implements Runnable {
             //与边界碰撞
             if (!(0 <= x && x < MyPanel.backgroundWidth && 0 <= y && y < MyPanel.backgroundHeight && isLive)) {
                 isLive = false;
-                System.out.println("子弹@" + hashCode + "消亡");
+                //System.out.println("子弹@" + hashCode + "消亡");
                 break;
             }
             //显示子弹信息，用于测试
-            System.out.println("子弹@" + hashCode + ": (" + x + ", " + y + ")");
+            //System.out.println("子弹@" + hashCode + ": (" + x + ", " + y + ")");
         }
     }
 
