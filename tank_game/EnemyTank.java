@@ -7,6 +7,7 @@ public class EnemyTank extends Tank implements Runnable {
 
     public EnemyTank(int x, int y) {
         super(x, y);
+        //setShotPeriod(1);
     }
 
     @Override

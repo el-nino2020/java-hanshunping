@@ -11,11 +11,11 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private MyTank mt;
     private Vector<EnemyTank> enemyTanks = new Vector<>();
     private Vector<Bomb> bombs = new Vector<>();
-    private int enemyNum = 10;
+    private int enemyNum = 4;
 
     //panel和frame的大小如果设置相等，实际上前者会更大，导致坦克可以运动出边界
     //因此需要人为调小一点——在别的显示器上也许没有问题
-    public static final int backgroundWidth = TankGame01.frameWidth - 20;
+    public static final int backgroundWidth = 800;
     public static final int backgroundHeight = TankGame01.frameHeight - 40;
 
     public MyPanel() {
@@ -71,6 +71,18 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         }
 
         drawBomb(g);
+        drawInfo(g);
+
+    }
+
+    private void drawInfo(Graphics g) {
+        g.setColor(Color.black);
+        Font font = new Font("黑体", Font.BOLD, 25);
+        g.setFont(font);
+        g.drawString("击毁的敌方坦克总数：", backgroundWidth + 20, 50);
+        g.drawString(Recorder.getTotalKilledEnemy() + "", backgroundWidth + 100, 100);
+
+        drawTank(backgroundWidth + 20, 70, g, 0, 1);
 
     }
 
@@ -115,7 +127,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
      * @param y         坦克纵坐标
      * @param g         画笔
      * @param direction 坦克朝向
-     * @param type      敌方或是自己
+     * @param type      敌方: 1; 自己: 0
      */
     private void drawTank(int x, int y, Graphics g, int direction, int type) {
         switch (type) {
@@ -177,6 +189,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     tank.setLive(false);
                     bullet.setLive(false);
                     bombs.add(new Bomb(tank.getX(), tank.getY()));
+                    if (tank instanceof EnemyTank) {
+                        Recorder.anEnemyKilled();
+                    }
                 }
                 break;
             case 2:
@@ -186,7 +201,9 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     tank.setLive(false);
                     bullet.setLive(false);
                     bombs.add(new Bomb(tank.getX(), tank.getY()));
-
+                    if (tank instanceof EnemyTank) {
+                        Recorder.anEnemyKilled();
+                    }
                 }
                 break;
 
