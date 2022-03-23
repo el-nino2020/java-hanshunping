@@ -31,6 +31,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
 
             new Thread(enemyTank).start();
 
+            Recorder.setEnemyTanks(enemyTanks);
         }
 
 
