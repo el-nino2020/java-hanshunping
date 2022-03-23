@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Scanner;
 import java.util.Vector;
 
 public class MyPanel extends JPanel implements KeyListener, Runnable {
@@ -21,17 +22,37 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     public MyPanel() {
         mt = new MyTank(500, 500);
 
-        for (int i = 0; i < enemyNum; i++) {
-            int x = (int) (Math.random() * backgroundWidth),
-                    y = (int) (Math.random() * (backgroundHeight / 3));
-            EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
-            enemyTank.setDirection(1);
-            enemyTank.setEnemyTanks(enemyTanks);
-            enemyTanks.add(enemyTank);
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("开始新的游戏：输入0");
+        System.out.println("继续上局游戏：输入1");
+        System.out.print("输入您的选择：");
+        String choice = scanner.next();
 
-            new Thread(enemyTank).start();
+        while (!(choice.equals("0") || choice.equals("1"))) {
+            System.out.print("输入错误，请重新输入：");
+            choice = scanner.next();
+        }
 
-            Recorder.setEnemyTanks(enemyTanks);
+        if (choice.equals("0")) {
+            Recorder.readInfo(0);
+            for (int i = 0; i < enemyNum; i++) {
+                int x = (int) (Math.random() * backgroundWidth),
+                        y = (int) (Math.random() * (backgroundHeight / 3));
+                EnemyTank enemyTank = new EnemyTank(x, y);//创建敌方坦克
+                enemyTank.setDirection(1);
+                enemyTank.setEnemyTanks(enemyTanks);
+                enemyTanks.add(enemyTank);
+
+                new Thread(enemyTank).start();
+
+                Recorder.setEnemyTanks(enemyTanks);
+            }
+        } else if (choice.equals("1")) {
+            enemyTanks = Recorder.readInfo(1);
+            for (EnemyTank e : enemyTanks) {
+                new Thread(e).start();
+            }
+
         }
 
 
@@ -80,7 +101,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
         g.setColor(Color.black);
         Font font = new Font("黑体", Font.BOLD, 25);
         g.setFont(font);
-        g.drawString("击毁的敌方坦克总数：", backgroundWidth + 20, 50);
+        g.drawString("生涯击毁坦克总数：", backgroundWidth + 20, 50);
         g.drawString(Recorder.getTotalKilledEnemy() + "", backgroundWidth + 100, 100);
 
         drawTank(backgroundWidth + 20, 70, g, 0, 1);

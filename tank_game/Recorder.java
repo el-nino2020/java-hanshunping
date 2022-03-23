@@ -1,8 +1,6 @@
 package tank_game;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.Vector;
 
 /**
@@ -34,6 +32,45 @@ public final class Recorder {
     public static void anEnemyKilled() {
         ++totalKilledEnemy;
     }
+
+    /**
+     * @param choice choice >=0，值越大，执行的操作越多(可拓展性)
+     * @return 需要的信息
+     */
+    public static Vector<EnemyTank> readInfo(int choice) {
+        BufferedReader br = null;
+
+        try {
+            br = new BufferedReader(new FileReader(filePath));
+
+            totalKilledEnemy = Integer.parseInt(br.readLine());
+
+            if (choice >= 1) {
+                enemyTanks = new Vector<>();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] strings = line.split(" ");
+                    EnemyTank enemyTank =
+                            new EnemyTank(Integer.parseInt(strings[0]),
+                                    Integer.parseInt(strings[1]));
+                    enemyTank.setDirection(Integer.parseInt(strings[2]));
+                    enemyTanks.add(enemyTank);
+                }
+                return enemyTanks;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
 
     public static void writeInfo() {
         BufferedWriter bw = null;
