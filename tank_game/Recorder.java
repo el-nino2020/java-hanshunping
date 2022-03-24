@@ -7,7 +7,7 @@ import java.util.Vector;
  * 该类不需要创建对象，所有方法均为静态方法
  */
 public final class Recorder {
-    //私有构造器，使该类不能被实例化，参考了Math类
+    //将构造器私有，使该类不能被实例化，参考了Math类
     private Recorder() {
     }
 
@@ -34,15 +34,40 @@ public final class Recorder {
     }
 
     /**
+     * 查看路径为filepath的文件是否存在，如果不存在，新建该文件
+     */
+    private static void infoFileExist() {
+        File file = new File(filePath);
+        if (file.exists()) {
+            return;
+        } else {
+            try {
+                file.createNewFile();
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write("0");
+                bw.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+            }
+        }
+
+    }
+
+
+    /**
      * @param choice choice >=0，值越大，执行的操作越多(可拓展性)
      * @return 需要的信息
      */
     public static Vector<EnemyTank> readInfo(int choice) {
+        infoFileExist();
+
         BufferedReader br = null;
+
 
         try {
             br = new BufferedReader(new FileReader(filePath));
-
+            //choice等于0的情况
             totalKilledEnemy = Integer.parseInt(br.readLine());
 
             if (choice >= 1) {
