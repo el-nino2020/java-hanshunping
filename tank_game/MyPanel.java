@@ -14,6 +14,10 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     private Vector<Bomb> bombs = new Vector<>();
     private int enemyNum = 4;
 
+    public void enemyKilled() {
+        --enemyNum;
+    }
+
     //panel和frame的大小如果设置相等，实际上前者会更大，导致坦克可以运动出边界
     //因此需要人为调小一点——在别的显示器上也许没有问题
     public static final int backgroundWidth = 800;
@@ -49,6 +53,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
             }
         } else if (choice.equals("1")) {
             enemyTanks = Recorder.readInfo(1);
+            enemyNum = enemyTanks.size();
             for (EnemyTank e : enemyTanks) {
                 new Thread(e).start();
             }
@@ -98,13 +103,30 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
     }
 
     private void drawInfo(Graphics g) {
+        drawTank(backgroundWidth + 20, 60, g, 0, 1);
+        drawTank(backgroundWidth + 20, 160, g, 0, 1);
+
         g.setColor(Color.black);
-        Font font = new Font("黑体", Font.BOLD, 25);
-        g.setFont(font);
+
+        g.setFont(new Font("黑体", Font.BOLD, 25));
         g.drawString("生涯击毁坦克总数：", backgroundWidth + 20, 50);
         g.drawString(Recorder.getTotalKilledEnemy() + "", backgroundWidth + 100, 100);
 
-        drawTank(backgroundWidth + 20, 70, g, 0, 1);
+        g.drawString("敌方坦克剩余：", backgroundWidth + 20, 150);
+        g.drawString(enemyNum + "", backgroundWidth + 100, 200);
+
+        //提示本轮游戏结束
+        if (enemyNum == 0) {
+            g.setColor(Color.white);
+            g.fillRect(150, 250, 400, 200);
+            g.setColor(Color.RED);
+
+            g.setFont(new Font("宋体", Font.BOLD, 75));
+            g.drawString("你赢了！", 185, 360);
+            g.setFont(new Font("宋体", Font.BOLD, 25));
+            g.drawString("请开始新的游戏", 220, 425);
+
+        }
 
     }
 
@@ -213,6 +235,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     bombs.add(new Bomb(tank.getX(), tank.getY()));
                     if (tank instanceof EnemyTank) {
                         Recorder.anEnemyKilled();
+                        enemyKilled();
                     }
                 }
                 break;
@@ -225,6 +248,7 @@ public class MyPanel extends JPanel implements KeyListener, Runnable {
                     bombs.add(new Bomb(tank.getX(), tank.getY()));
                     if (tank instanceof EnemyTank) {
                         Recorder.anEnemyKilled();
+                        enemyKilled();
                     }
                 }
                 break;
