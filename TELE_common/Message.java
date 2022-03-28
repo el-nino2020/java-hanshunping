@@ -1,4 +1,4 @@
-package TELE_server.TELEcommon;
+package TELE_common;
 
 import java.io.Serializable;
 
@@ -16,6 +16,9 @@ public class Message implements Serializable {
         this.receiver = receiver;
         this.content = content;
         this.sendTime = sendTime;
+    }
+
+    public Message() {
     }
 
     public String getSender() {

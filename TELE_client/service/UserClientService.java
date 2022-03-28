@@ -1,8 +1,8 @@
 package TELE_client.service;
 
-import TELE_client.TELEcommon.Message;
-import TELE_client.TELEcommon.MessageType;
-import TELE_client.TELEcommon.User;
+import TELE_common.Message;
+import TELE_common.MessageType;
+import TELE_common.User;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -23,6 +23,7 @@ public class UserClientService {
             socket = new Socket(InetAddress.getByName(serverIP), serverPort);
             ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
             oos.writeObject(user);//给服务端发送User对象
+            oos.flush();
 
             ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
             Message message = (Message) ois.readObject();//服务端回传Message对象
