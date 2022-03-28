@@ -4,6 +4,7 @@ import TELE_common.Message;
 import TELE_common.MessageType;
 import TELE_common.User;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
@@ -77,6 +78,23 @@ public class UserClientService {
             Thread.sleep(30);
 
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void clientExit() {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+            Message message = new Message();
+            message.setMesType(MessageType.MESSAGE_CLIENT_EXIT);
+            oos.writeObject(message);
+            oos.flush();
+
+            System.out.println("\n你退出了系统");
+            socket.close();
+            System.exit(0);
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

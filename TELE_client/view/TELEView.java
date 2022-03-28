@@ -59,7 +59,7 @@ public class TELEView {
                                 System.out.println("发送文件");
                                 break;
                             case "9":
-                                loop = false;
+                                userClientService.clientExit();
                                 break;
                             default:
                                 System.out.println("============输入不正确，请重新输入===========");

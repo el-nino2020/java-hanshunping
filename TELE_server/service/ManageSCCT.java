@@ -18,6 +18,10 @@ public class ManageSCCT {
         return threads.get(userId);
     }
 
+    public static void removeThread(String userID) {
+        threads.remove(userID);
+    }
+
     public static String getOnlineUsers() {
         StringBuilder sb = new StringBuilder();
 

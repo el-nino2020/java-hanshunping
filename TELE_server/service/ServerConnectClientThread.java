@@ -38,8 +38,11 @@ public class ServerConnectClientThread extends Thread {
 
                     oos.writeObject(message);
                     oos.flush();
-                }else{
-
+                } else if (message.getMesType().equals(MessageType.MESSAGE_CLIENT_EXIT)) {
+                    System.out.println("用户" + userID + "退出");
+                    socket.close();
+                    ManageSCCT.removeThread(userID);
+                    break;
                 }
 
             }
