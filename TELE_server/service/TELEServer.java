@@ -11,6 +11,10 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 
+
+/**
+ * 该类负责客户端的登录
+ */
 public class TELEServer {
     private static final int port = 9999;
     private ServerSocket serverSocket;
@@ -50,7 +54,7 @@ public class TELEServer {
 
                 //登录成功
                 if (checkUser(user.getUserID(), user.getPassword())) {
-                    System.out.println("登录成功");
+                    System.out.println("用户" + user.getUserID() + "登录成功");
                     message.setMesType(MessageType.MESSAGE_LOGIN_SUCCESS);
                     oos.writeObject(message);
                     oos.flush();

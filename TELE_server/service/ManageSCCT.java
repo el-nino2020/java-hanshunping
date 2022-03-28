@@ -1,6 +1,7 @@
 package TELE_server.service;
 
 import java.util.HashMap;
+import java.util.Set;
 
 public class ManageSCCT {
     private ManageSCCT() {
@@ -15,5 +16,18 @@ public class ManageSCCT {
 
     public static ServerConnectClientThread getThread(String userId) {
         return threads.get(userId);
+    }
+
+    public static String getOnlineUsers() {
+        StringBuilder sb = new StringBuilder();
+
+        Set<String> strings = threads.keySet();
+
+        for (String s : strings) {
+            sb.append(s);
+            sb.append(" ");
+        }
+
+        return sb.toString();
     }
 }

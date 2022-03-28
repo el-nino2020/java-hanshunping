@@ -7,6 +7,11 @@ public class TELEView {
     private boolean loop = true;
     private UserClientService userClientService = new UserClientService();
 
+    /**
+     * 启动客户端
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         new TELEView().mainMenu();
         System.out.println("\n你退出了系统");
@@ -26,8 +31,7 @@ public class TELEView {
                 System.out.print("请输入密  码:");
                 String pwd = Utility.readString(30);
 
-                //向服务端发送申请，判断用户ID是否存在，以及是否与密码匹配
-
+                //向服务端发送申请，判断用户信息是否合法
                 if (userClientService.checkUser(id, pwd)) {//登录成功，进入二级菜单
                     System.out.println("==============登录成功==============");
                     while (loop) {//二级菜单
@@ -43,7 +47,7 @@ public class TELEView {
 
                         switch (choice2) {
                             case "1":
-                                System.out.println("用户列表");
+                                userClientService.showOnlineFriends();
                                 break;
                             case "2":
                                 System.out.println("群发消息");
