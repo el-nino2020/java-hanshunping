@@ -1,9 +1,11 @@
 package TELE_client.view;
 
+import TELE_client.service.UserClientService;
 import TELE_client.utils.Utility;
 
 public class TELEView {
     private boolean loop = true;
+    private UserClientService userClientService = new UserClientService();
 
     public static void main(String[] args) {
         new TELEView().mainMenu();
@@ -26,7 +28,7 @@ public class TELEView {
 
                 //向服务端发送申请，判断用户ID是否存在，以及是否与密码匹配
 
-                if (true) {//登录成功，进入二级菜单
+                if (userClientService.checkUser(id, pwd)) {//登录成功，进入二级菜单
                     System.out.println("==============登录成功==============");
                     while (loop) {//二级菜单
                         System.out.println("============网络通信系统二级菜单(用户" +
