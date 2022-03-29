@@ -3,6 +3,7 @@ package TELE_client.service;
 import TELE_common.Message;
 import TELE_common.MessageType;
 
+import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 
@@ -49,13 +50,26 @@ public class ClientConnectServerThread extends Thread {
                     System.out.println("\n########### NEW MESSAGE #################");
                     System.out.println(sender + " 对你(" + receiver + ")说：" + content);
                     System.out.println("############################################");
-                }else if (message.getMesType().equals(MessageType.MESSAGE_PUBLIC_MESSAGE)) {
+                } else if (message.getMesType().equals(MessageType.MESSAGE_PUBLIC_MESSAGE)) {
                     //打印收到的私聊消息
                     String sender = message.getSender();
                     String content = message.getContent();
+
                     System.out.println("\n########### NEW MESSAGE #################");
                     System.out.println(sender + " 对大家说：" + content);
                     System.out.println("############################################");
+                } else if (message.getMesType().equals(MessageType.MESSAGE_FILE_MESSAGE)) {
+                    String receiver = message.getReceiver();
+                    String sender = message.getSender();
+                    System.out.println("\n########### NEW NOTIFICATION #################");
+                    System.out.println(sender + "给你(" + receiver + ")发送文件：" +
+                            message.getSrcPath() + "到你的设备" + message.getDestPath());
+                    FileOutputStream fos = new FileOutputStream(message.getDestPath());
+                    fos.write(message.getFileBytes());
+                    fos.close();
+                    System.out.println("文件已保存到" + message.getDestPath());
+                    System.out.println("########################################################");
+
                 }
             }
         } catch (Exception e) {

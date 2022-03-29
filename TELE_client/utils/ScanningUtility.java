@@ -7,7 +7,7 @@ import java.util.Scanner;
  * 处理各种情况的用户输入，并且能够按照程序员的需求，得到用户的控制台输入。
  */
 @SuppressWarnings({"all"})
-public class Utility {
+public class ScanningUtility {
     //静态属性。。。
     private static Scanner scanner = new Scanner(System.in);
 

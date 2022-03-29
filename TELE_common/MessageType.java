@@ -36,4 +36,9 @@ public interface MessageType {
      * 群发信息
      */
     String MESSAGE_PUBLIC_MESSAGE = "7";
+
+    /**
+     * 文件消息
+     */
+    String MESSAGE_FILE_MESSAGE = "8";
 }

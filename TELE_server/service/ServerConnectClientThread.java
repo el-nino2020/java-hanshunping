@@ -89,6 +89,28 @@ public class ServerConnectClientThread extends Thread {
                         oos.flush();
                     }
 
+                } else if (message.getMesType().equals(MessageType.MESSAGE_FILE_MESSAGE)) {
+                    //用户请求发送文件
+                    String receiver = message.getReceiver();
+                    String sender = message.getSender();
+
+                    System.out.println(sender + "给" + receiver + "发送文件：" +
+                            message.getSrcPath() + "到对方设备" + message.getDestPath());
+                    //消息接收者对应的线程
+                    ServerConnectClientThread scct = ManageSCCT.getThread(receiver);
+                    if (scct == null) {
+                        //该用户不在线，请求非法
+                        //这一部分功能先不写
+                        System.out.println("该请求非法，" + receiver + " 不在线");
+                    } else if (sender.equals(receiver)) {
+                        System.out.println("该请求非法：接收者是发送者");
+                    } else {
+                        System.out.println("请求合法");
+                        ObjectOutputStream oos = new ObjectOutputStream(scct.getSocket().getOutputStream());
+                        oos.writeObject(message);
+                        oos.flush();
+                    }
+
                 }
 
             }
