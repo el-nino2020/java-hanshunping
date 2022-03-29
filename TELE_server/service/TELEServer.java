@@ -42,6 +42,9 @@ public class TELEServer {
 
     public TELEServer() {
         System.out.println("服务端在" + port + "端口监听");
+
+        new SendPublicNewsService().start();
+
         try {
             serverSocket = new ServerSocket(port);
             while (true) {
