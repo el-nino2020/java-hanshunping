@@ -16,18 +16,25 @@ public class ServerConnectClientThread extends Thread {
         userID = userId;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     @Override
     public void run() {
 
         try {
 
             while (true) {
-                //获得两个对象流的语句如果放在循环外面，程序貌似会阻塞？
-                ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+                //https://zhidao.baidu.com/question/250766120.html
+                //ObjectOutputStream有锁机制，不能在一个线程中new多次，故不适合声明在这里
+                //换句话说，需要的时候再new就行了
+                //ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
 
                 Message message = (Message) ois.readObject();
 
+                //客户端请求在线用户列表
                 if (message.getMesType().equals(MessageType.MESSAGE_GET_ONLINE_FRIENDS)) {
                     System.out.println("用户" + userID + "请求在线用户列表");
                     message = new Message();
@@ -36,13 +43,33 @@ public class ServerConnectClientThread extends Thread {
 
                     message.setContent(onlineUsers);
 
+                    ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                     oos.writeObject(message);
                     oos.flush();
                 } else if (message.getMesType().equals(MessageType.MESSAGE_CLIENT_EXIT)) {
+                    //客户端退出
                     System.out.println("用户" + userID + "退出");
                     socket.close();
                     ManageSCCT.removeThread(userID);
                     break;
+                } else if (message.getMesType().equals(MessageType.MESSAGE_COMMON_MESSAGE)) {
+                    //客户端发送私聊消息
+                    String receiver = message.getReceiver();
+                    String sender = message.getSender();
+                    String content = message.getContent();
+                    System.out.println(sender + " 对 " + receiver + " 说：" + content);
+                    //消息接收者对应的线程
+                    ServerConnectClientThread scct = ManageSCCT.getThread(receiver);
+                    if (scct == null) {
+                        //该用户不在线，请求非法
+                        //这一部分功能先不写
+                        System.out.println("该请求非法，" + receiver + " 不在线");
+                    } else {
+                        System.out.println("请求合法");
+                        ObjectOutputStream oos2 = new ObjectOutputStream(scct.getSocket().getOutputStream());
+                        oos2.writeObject(message);
+                        oos2.flush();
+                    }
                 }
 
             }

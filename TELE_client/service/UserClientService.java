@@ -10,6 +10,10 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 
+/**
+ * 该类处理与用户登录相关的功能，
+ * 同时管理客户端
+ */
 public class UserClientService {
 
     private static final String serverIP = "127.0.0.1";
@@ -72,10 +76,6 @@ public class UserClientService {
             message.setMesType(MessageType.MESSAGE_GET_ONLINE_FRIENDS);
             oos.writeObject(message);
             oos.flush();
-
-            //为了让对应的CCST线程能够先执行完打印，
-            //然后才是菜单的再次打印。具体方法是：
-            Thread.sleep(30);
 
         } catch (Exception e) {
             e.printStackTrace();

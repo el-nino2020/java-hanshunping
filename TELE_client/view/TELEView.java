@@ -1,11 +1,13 @@
 package TELE_client.view;
 
+import TELE_client.service.MessageClientService;
 import TELE_client.service.UserClientService;
 import TELE_client.utils.Utility;
 
 public class TELEView {
     private boolean loop = true;
     private UserClientService userClientService = new UserClientService();
+    private MessageClientService messageClientService = new MessageClientService();
 
     /**
      * 启动客户端
@@ -53,7 +55,11 @@ public class TELEView {
                                 System.out.println("群发消息");
                                 break;
                             case "3":
-                                System.out.println("私聊消息");
+                                System.out.print("请输入聊天对象的ID(在线)：");
+                                String receiverID = Utility.readString(30);
+                                System.out.print("请输入想说的话：");
+                                String content = Utility.readString(100);
+                                messageClientService.sendPrivateMessage(id, receiverID, content);
                                 break;
                             case "4":
                                 System.out.println("发送文件");
@@ -65,6 +71,12 @@ public class TELEView {
                                 System.out.println("============输入不正确，请重新输入===========");
                         }
 
+
+                        try {
+                            Thread.sleep(30);//等待对应的CCST线程先打印完
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 } else {
                     System.out.println("==============登录失败==================");

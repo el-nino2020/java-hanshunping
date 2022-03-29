@@ -16,6 +16,9 @@ public class ClientConnectServerThread extends Thread {
         this.userID = userID;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
 
     /**
      * 该方法不断接收来自服务端的消息(如果有的话)
@@ -38,7 +41,14 @@ public class ClientConnectServerThread extends Thread {
                     for (String s : users) {
                         System.out.println("用户: " + s);
                     }
-                } else {
+                } else if (message.getMesType().equals(MessageType.MESSAGE_COMMON_MESSAGE)) {
+                    //打印收到的私聊消息
+                    String receiver = message.getReceiver();
+                    String sender = message.getSender();
+                    String content = message.getContent();
+                    System.out.println("\n########### NEW MESSAGE #################");
+                    System.out.println(sender + " 对你(" + receiver + ")说：" + content);
+                    System.out.println("############################################");
                 }
             }
         } catch (Exception e) {
