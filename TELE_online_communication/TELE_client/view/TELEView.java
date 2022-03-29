@@ -1,9 +1,9 @@
-package TELE_client.view;
+package TELE_online_communication.TELE_client.view;
 
-import TELE_client.service.FileClientService;
-import TELE_client.service.MessageClientService;
-import TELE_client.service.UserClientService;
-import TELE_client.utils.ScanningUtility;
+import TELE_online_communication.TELE_client.service.FileClientService;
+import TELE_online_communication.TELE_client.service.MessageClientService;
+import TELE_online_communication.TELE_client.service.UserClientService;
+import TELE_online_communication.TELE_client.utils.ScanningUtility;
 
 public class TELEView {
     private boolean loop = true;

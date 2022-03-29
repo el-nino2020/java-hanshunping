@@ -1,4 +1,4 @@
-package TELE_common;
+package TELE_online_communication.TELE_common;
 
 import java.io.Serializable;
 

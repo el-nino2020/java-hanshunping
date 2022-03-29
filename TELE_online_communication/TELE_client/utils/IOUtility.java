@@ -1,4 +1,4 @@
-package TELE_client.utils;//Utils.java
+package TELE_online_communication.TELE_client.utils;//Utils.java
 
 import java.io.*;
 

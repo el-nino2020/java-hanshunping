@@ -1,4 +1,4 @@
-package TELE_common;
+package TELE_online_communication.TELE_common;
 
 public interface MessageType {
     //使用该类的常量以表示消息类型

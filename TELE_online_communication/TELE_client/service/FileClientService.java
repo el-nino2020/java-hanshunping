@@ -1,8 +1,8 @@
-package TELE_client.service;
+package TELE_online_communication.TELE_client.service;
 
-import TELE_client.utils.IOUtility;
-import TELE_common.Message;
-import TELE_common.MessageType;
+import TELE_online_communication.TELE_client.utils.IOUtility;
+import TELE_online_communication.TELE_common.Message;
+import TELE_online_communication.TELE_common.MessageType;
 
 import java.io.FileInputStream;
 import java.io.ObjectOutputStream;

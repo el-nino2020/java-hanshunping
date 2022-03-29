@@ -1,4 +1,4 @@
-package TELE_server.service;
+package TELE_online_communication.TELE_server.service;
 
 import java.util.HashMap;
 import java.util.Set;

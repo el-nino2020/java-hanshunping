@@ -1,7 +1,7 @@
-package TELE_server.service;
+package TELE_online_communication.TELE_server.service;
 
-import TELE_common.Message;
-import TELE_common.MessageType;
+import TELE_online_communication.TELE_common.Message;
+import TELE_online_communication.TELE_common.MessageType;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

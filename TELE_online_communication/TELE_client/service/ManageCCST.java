@@ -1,4 +1,4 @@
-package TELE_client.service;
+package TELE_online_communication.TELE_client.service;
 
 import java.util.HashMap;
 

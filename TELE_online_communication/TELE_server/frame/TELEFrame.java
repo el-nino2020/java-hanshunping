@@ -1,6 +1,6 @@
-package TELE_server.frame;
+package TELE_online_communication.TELE_server.frame;
 
-import TELE_server.service.TELEServer;
+import TELE_online_communication.TELE_server.service.TELEServer;
 
 /**
  * 服务端依靠这个类启动
