@@ -13,7 +13,7 @@ public interface MessageType {
     String MESSAGE_LOGIN_FAILURE = "2";
 
     /**
-     * 普通信息
+     * 普通信息(私聊)
      */
     String MESSAGE_COMMON_MESSAGE = "3";
 
@@ -32,4 +32,8 @@ public interface MessageType {
      */
     String MESSAGE_CLIENT_EXIT = "6";
 
+    /**
+     * 群发信息
+     */
+    String MESSAGE_PUBLIC_MESSAGE = "7";
 }

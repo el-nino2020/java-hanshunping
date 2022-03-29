@@ -52,7 +52,9 @@ public class TELEView {
                                 userClientService.showOnlineFriends();
                                 break;
                             case "2":
-                                System.out.println("群发消息");
+                                System.out.print("请输入想对大家说的话：");
+                                String content2 = Utility.readString(100);
+                                messageClientService.sendPublicMessage(id, content2);
                                 break;
                             case "3":
                                 System.out.print("请输入聊天对象的ID(在线)：");

@@ -6,6 +6,8 @@ import TELE_common.MessageType;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Set;
 
 public class ServerConnectClientThread extends Thread {
     private Socket socket;
@@ -64,12 +66,29 @@ public class ServerConnectClientThread extends Thread {
                         //该用户不在线，请求非法
                         //这一部分功能先不写
                         System.out.println("该请求非法，" + receiver + " 不在线");
+                    } else if (sender.equals(receiver)) {
+                        System.out.println("该请求非法：接收者是发送者");
                     } else {
                         System.out.println("请求合法");
                         ObjectOutputStream oos2 = new ObjectOutputStream(scct.getSocket().getOutputStream());
                         oos2.writeObject(message);
                         oos2.flush();
                     }
+                } else if (message.getMesType().equals(MessageType.MESSAGE_PUBLIC_MESSAGE)) {
+                    //用户要求群发消息
+                    System.out.println(message.getSender() + " 对大家说：" + message.getContent());
+
+                    HashMap<String, ServerConnectClientThread> threads = ManageSCCT.getThreads();
+                    Set<String> keys = threads.keySet();
+                    for (String key : keys) {
+                        if (key.equals(message.getSender())) {//不能群发给自己
+                            continue;
+                        }
+                        ObjectOutputStream oos = new ObjectOutputStream(threads.get(key).getSocket().getOutputStream());
+                        oos.writeObject(message);
+                        oos.flush();
+                    }
+
                 }
 
             }

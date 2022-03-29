@@ -49,6 +49,13 @@ public class ClientConnectServerThread extends Thread {
                     System.out.println("\n########### NEW MESSAGE #################");
                     System.out.println(sender + " 对你(" + receiver + ")说：" + content);
                     System.out.println("############################################");
+                }else if (message.getMesType().equals(MessageType.MESSAGE_PUBLIC_MESSAGE)) {
+                    //打印收到的私聊消息
+                    String sender = message.getSender();
+                    String content = message.getContent();
+                    System.out.println("\n########### NEW MESSAGE #################");
+                    System.out.println(sender + " 对大家说：" + content);
+                    System.out.println("############################################");
                 }
             }
         } catch (Exception e) {
