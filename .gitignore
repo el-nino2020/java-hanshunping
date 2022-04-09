@@ -6,4 +6,3 @@ cooked.jpg
 mysql.properties
 com/*
 c3p0-config.xml
-druid.properties
