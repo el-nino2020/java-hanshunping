@@ -3,6 +3,7 @@ package mhl.view;
 import mhl.domain.DiningTable;
 import mhl.domain.Employee;
 import mhl.domain.Menu;
+import mhl.service.BillService;
 import mhl.service.DiningTableService;
 import mhl.service.EmployeeService;
 import mhl.service.MenuService;
@@ -19,6 +20,7 @@ public class MHLView {
     private EmployeeService employeeService = new EmployeeService();
     private DiningTableService diningTableService = new DiningTableService();
     private MenuService menuService = new MenuService();
+    private BillService billService = new BillService();
 
     public static void main(String[] args) {
         new MHLView().mainMenu();
@@ -66,7 +68,7 @@ public class MHLView {
                                 showMenu();
                                 break;
                             case "4":
-                                System.out.println("\t\t\t4 点餐服务");
+                                orderMenu();
                                 break;
                             case "5":
                                 System.out.println("\t\t\t5 查看账单");
@@ -151,6 +153,62 @@ public class MHLView {
         }
 
         System.out.println("===============显示完毕===================");
+
+    }
+
+    private void orderMenu() {
+        System.out.println("===============点餐服务===================");
+
+        System.out.print("请选择点餐的桌号(-1退出)：");
+        int tableId = ScanningUtility.readInt();
+        if (tableId == -1) {
+            System.out.println("===============退出点餐===================");
+            return;
+        }
+        DiningTable table = diningTableService.getTable(tableId);
+
+        if (table == null) {
+            System.out.println("===============餐桌号不存在，退出点餐===================");
+            return;
+        }
+        if ("空".equals(table.getState())) {
+            System.out.println("===============请先预定餐桌，退出点餐===================");
+            return;
+        }
+
+
+        System.out.print("请选择菜品编号(-1退出)：");
+        int menuId = ScanningUtility.readInt();
+        if (menuId == -1) {
+            System.out.println("===============退出点餐===================");
+            return;
+        }
+        Menu dish = menuService.getDish(menuId);
+        if (dish == null) {
+            System.out.println("===============菜品号不存在，退出点餐===================");
+            return;
+        }
+
+
+        System.out.print("请选择菜品数量：");
+        int num = ScanningUtility.readInt();
+        if (num <= 0) {
+            System.out.println("===============数量不正确，退出点餐===================");
+            return;
+        }
+
+        char c = ScanningUtility.readConfirmSelection();
+        if (c == 'N') {
+            System.out.println("===============退出点餐===================");
+            return;
+        }
+
+        if (billService.createBill(menuId, num, dish.getPrice() * num, tableId)) {
+            System.out.println("===============点餐成功===================");
+        } else {
+            System.out.println("===============点餐失败===================");
+        }
+
 
     }
 }

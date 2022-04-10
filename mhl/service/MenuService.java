@@ -15,4 +15,14 @@ public class MenuService {
         String sql = "select * from menu";
         return menuDAO.queryMultiRow(sql, Menu.class);
     }
+
+    /**
+     *
+     * @param id 菜品id
+     * @return 该菜品存在则返回Menu对象，不然返回null
+     */
+    public Menu getDish(int id) {
+        String sql = "select * from menu where id = ? ;";
+        return menuDAO.querySingleRow(sql, Menu.class, id);
+    }
 }

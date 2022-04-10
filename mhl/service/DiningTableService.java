@@ -26,17 +26,26 @@ public class DiningTableService {
     }
 
     /**
-     *
-     * @param id 餐桌id
+     * @param id        餐桌id
      * @param orderName 预定人姓名
      * @param orderTel  预订人电话
-     * @return  预定成功则为true，否则为false
+     * @return 预定成功则为true，否则为false
      */
     public boolean orderTable(int id, String orderName, String orderTel) {
         String sql = "update dining_table set state = '已预订', orderName = ?," +
                 "orderTel = ? where id =?";
         int row = diningTableDAO.update(sql, orderName, orderTel, id);
         return row > 0;
+    }
+
+    /**
+     * @param id 餐桌id
+     * @param state 新的状态
+     * @return 修改成功返回true，否则返回false
+     */
+    public boolean changeTableState(int id, String state) {
+        String sql = "update dining_table set state = ? where id = ?";
+        return diningTableDAO.update(sql, state, id) > 0;
     }
 
 

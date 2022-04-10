@@ -56,3 +56,20 @@ INSERT INTO menu VALUES
 	(NULL, '咖啡','饮料',5);
 	
 SELECT * FROM menu;
+
+################# 创建bill(账单)表
+DROP TABLE bill;
+CREATE TABLE bill(
+	id INT PRIMARY KEY AUTO_INCREMENT, -- 账单表中的编号
+	billId VARCHAR(80) NOT NULL, -- 订单编号，由系统生成
+	menuId INT NOT NULL, -- 菜品号
+	num INT NOT NULL, -- 菜品数量
+	money DOUBLE NOT NULL, -- 该份账单的价格
+	tableId INT NOT NULL, -- 桌号
+	billDate DATETIME NOT NULL, -- 账单日期
+	state VARCHAR(30) NOT NULL , -- 账单状态,包括“未结账”、“已结账”
+	FOREIGN KEY (menuId) REFERENCES menu(id),
+	FOREIGN KEY (tableId) REFERENCES dining_table(id)	
+);
+
+SELECT * FROM bill;
