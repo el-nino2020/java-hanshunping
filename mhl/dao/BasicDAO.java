@@ -1,6 +1,6 @@
 package mhl.dao;
 
-import jdbc_dao.utils.JDBCUtils;
+import mhl.utils.JDBCUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;

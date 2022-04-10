@@ -1,5 +1,7 @@
 package mhl.view;
 
+import mhl.domain.Employee;
+import mhl.service.EmployeeService;
 import mhl.utils.ScanningUtility;
 
 /**
@@ -7,6 +9,7 @@ import mhl.utils.ScanningUtility;
  */
 public class MHLView {
     private boolean loop = true;
+    private EmployeeService employeeService = new EmployeeService();
 
     public static void main(String[] args) {
         new MHLView().mainMenu();
@@ -21,12 +24,15 @@ public class MHLView {
             String choice = ScanningUtility.readString(1);
             if ("1".equals(choice)) {
                 System.out.print("请输入员工号：");
-                String id = ScanningUtility.readString(50);
+                String empId = ScanningUtility.readString(30);
                 System.out.print("请输入密  码：");
-                String pwd = ScanningUtility.readString(80);
+                String pwd = ScanningUtility.readString(50);
 
-                if ("123".equals(pwd)) {//登录成功
+                Employee employee = employeeService.logIn(empId, pwd);
+
+                if (employee != null) {//登录成功
                     System.out.println("==============登录成功==================");
+                    System.out.println("欢迎！" + employee.getName());
                     while (loop) {//二级菜单
                         System.out.println("===============满汉楼二级菜单===================");
                         System.out.println("\t\t\t1 显示餐桌状态");
