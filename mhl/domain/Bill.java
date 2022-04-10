@@ -1,30 +1,20 @@
 package mhl.domain;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * 对应mhl.bill表
  */
 @SuppressWarnings({"unused"})
 public class Bill {
-//    id INT PRIMARY KEY AUTO_INCREMENT, -- 账单表中的编号
-//    billId VARCHAR(80) NOT NULL, -- 订单编号，由系统生成
-//    menuId INT NOT NULL, -- 菜品号
-//    num INT NOT NULL, -- 菜品数量
-//    money DOUBLE NOT NULL, -- 该份账单的价格
-//    tableId INT NOT NULL, -- 桌号
-//    billDate DATETIME NOT NULL, -- 账单日期
-//    state VARCHAR(30) NOT NULL , -- 账单状态,
-//    FOREIGN KEY (menuId) REFERENCES menu(id),
-//    FOREIGN KEY (tableId) REFERENCES dining_table(id)
-//            );
     private Integer id;
     private String billId;
     private Integer menuId;
     private Integer num;
     private Double money;
     private Integer tableId;
-    private Date billDate;
+    //这里不能使用Date，会报错，残念です
+    private LocalDateTime billDate;
     private String state;
 
     public Bill() {
@@ -78,11 +68,11 @@ public class Bill {
         this.tableId = tableId;
     }
 
-    public Date getBillDate() {
+    public LocalDateTime getBillDate() {
         return billDate;
     }
 
-    public void setBillDate(Date billDate) {
+    public void setBillDate(LocalDateTime billDate) {
         this.billDate = billDate;
     }
 
@@ -92,5 +82,11 @@ public class Bill {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return id + "\t\t" + menuId + "\t\t\t" + num + "\t\t\t" +
+                money + "\t\t" + tableId + "\t\t" + billDate + "\t\t" + state;
     }
 }

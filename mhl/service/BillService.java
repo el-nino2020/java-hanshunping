@@ -1,7 +1,9 @@
 package mhl.service;
 
 import mhl.dao.BillDAO;
+import mhl.domain.Bill;
 
+import java.util.List;
 import java.util.UUID;
 
 public class BillService {
@@ -30,5 +32,10 @@ public class BillService {
         }
 
         return true;
+    }
+
+    public List<Bill> getAllBill() {
+        String sql = "select * from bill;";
+        return billDAO.queryMultiRow(sql, Bill.class);
     }
 }
