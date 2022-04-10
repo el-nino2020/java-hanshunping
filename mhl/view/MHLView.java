@@ -75,7 +75,7 @@ public class MHLView {
                                 showBill();
                                 break;
                             case "6":
-                                System.out.println("\t\t\t6 结账");
+                                payBill();
                                 break;
                             case "9":
                                 loop = false;
@@ -221,6 +221,39 @@ public class MHLView {
             System.out.println(bill);
         }
         System.out.println("===============显示完毕===================");
+
+    }
+
+    private void payBill() {
+        System.out.println("===============结账服务===================");
+        System.out.print("请选择要结账的桌号(-1退出)：");
+        int tableId = ScanningUtility.readInt();
+        if (tableId == -1) {
+            System.out.println("===============退出结账===================");
+            return;
+        }
+        DiningTable table = diningTableService.getTable(tableId);
+
+        if (table == null) {
+            System.out.println("===============餐桌号不存在，退出结账===================");
+            return;
+        }
+
+        if (!billService.needToPayBill(tableId)) {
+            System.out.println("===============该餐桌不需要结账，退出结账===================");
+        }
+
+        char c = ScanningUtility.readConfirmSelection();
+        if (c == 'N') {
+            System.out.println("===============退出结账===================");
+            return;
+        }
+
+        if (billService.payBill(tableId)) {
+            System.out.println("===============结账完成===================");
+        } else {
+            System.out.println("===============结账失败 ===================");
+        }
 
     }
 }

@@ -39,13 +39,25 @@ public class DiningTableService {
     }
 
     /**
-     * @param id 餐桌id
+     * @param id    餐桌id
      * @param state 新的状态
      * @return 修改成功返回true，否则返回false
      */
     public boolean changeTableState(int id, String state) {
         String sql = "update dining_table set state = ? where id = ?";
         return diningTableDAO.update(sql, state, id) > 0;
+    }
+
+    /**
+     * 将某个餐桌的信息初始化，即state为'空'，orderName和orderTel为' '
+     *
+     * @param tableId
+     * @return 成功初始化则返回true, 否则返回false
+     */
+    public boolean initializeTable(int tableId) {
+        String sql = "update dining_table set state='空', " +
+                "orderName = ' ',orderTel = ' ' where id = ? ;";
+        return diningTableDAO.update(sql, tableId) > 0;
     }
 
 

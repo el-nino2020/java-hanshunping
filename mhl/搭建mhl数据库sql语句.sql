@@ -58,7 +58,8 @@ INSERT INTO menu VALUES
 SELECT * FROM menu;
 
 ################# 创建bill(账单)表
-DROP TABLE bill;
+#DROP TABLE bill;
+
 CREATE TABLE bill(
 	id INT PRIMARY KEY AUTO_INCREMENT, -- 账单表中的编号
 	billId VARCHAR(80) NOT NULL, -- 订单编号，由系统生成
