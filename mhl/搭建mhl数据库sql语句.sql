@@ -18,4 +18,21 @@ INSERT INTO employee VALUES
 	
 SELECT * FROM employee;
 
-####################
+#################### 创建dining_table(餐桌)表
+
+CREATE TABLE dining_table(
+	id INT PRIMARY KEY AUTO_INCREMENT, -- 餐桌号
+	state VARCHAR(20) NOT NULL ,-- 餐桌状态
+	orderName VARCHAR(50) NOT NULL ,-- 预订人姓名
+	orderTel VARCHAR(20) NOT NULL -- 预订人电话
+);
+
+INSERT INTO dining_table VALUES
+	(NULL, '空',' ',' '),
+	(NULL, '空',' ',' '),
+	(NULL, '空',' ',' ');
+	
+SELECT * FROM dining_table;
+
+
+#######################

@@ -1,6 +1,6 @@
 package mhl.domain;
 
-
+@SuppressWarnings({"unused"})
 public class Employee {
     private Integer id;
     private String emp_id;

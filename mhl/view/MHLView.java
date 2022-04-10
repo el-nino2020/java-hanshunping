@@ -1,8 +1,12 @@
 package mhl.view;
 
+import mhl.domain.DiningTable;
 import mhl.domain.Employee;
+import mhl.service.DiningTableService;
 import mhl.service.EmployeeService;
 import mhl.utils.ScanningUtility;
+
+import java.util.List;
 
 /**
  * 满汉楼界面
@@ -10,6 +14,7 @@ import mhl.utils.ScanningUtility;
 public class MHLView {
     private boolean loop = true;
     private EmployeeService employeeService = new EmployeeService();
+    private DiningTableService diningTableService = new DiningTableService();
 
     public static void main(String[] args) {
         new MHLView().mainMenu();
@@ -48,7 +53,7 @@ public class MHLView {
 
                         switch (choice) {
                             case "1":
-                                System.out.println("\t\t\t1 显示餐桌状态");
+                                showTableInfo();
                                 break;
                             case "2":
                                 System.out.println("\t\t\t2 预定餐桌");
@@ -71,6 +76,8 @@ public class MHLView {
                             default:
                                 System.out.println("输入有误，请重新输入");
                         }
+                        System.out.print("按任意键继续");
+                        ScanningUtility.readString(20," ");
                     }
                 } else {
                     System.out.println("==============登录失败==================");
@@ -82,5 +89,15 @@ public class MHLView {
             }
         }
         System.out.println("你退出了满汉楼");
+    }
+
+    private void showTableInfo() {
+        List<DiningTable> tables = diningTableService.getTableInfo();
+        System.out.println("餐桌编号\t餐桌状态");
+        for (DiningTable table : tables) {
+            System.out.println(table.getId() + "\t\t" + table.getState());
+        }
+        System.out.println("===============显示完毕===================");
+
     }
 }
