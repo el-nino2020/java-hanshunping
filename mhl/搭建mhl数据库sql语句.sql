@@ -37,4 +37,22 @@ INSERT INTO dining_table VALUES
 SELECT * FROM dining_table;
 
 
-#######################
+####################### 创建menu(菜单)表
+#drop table menu;
+CREATE TABLE menu(
+      id INT PRIMARY KEY AUTO_INCREMENT, -- 菜品编号
+      `name` VARCHAR(25) NOT NULL, -- 菜品名称
+      `type` VARCHAR(10) NOT NULL, -- 菜品种类
+      price DOUBLE NOT NULL -- 价格
+	);
+	
+INSERT INTO menu VALUES
+	(NULL, '蛋包饭','主食',25),
+	(NULL, '寿司','主食',20),
+	(NULL, '荞麦面','主食',20),
+	(NULL, '芝士蛋糕','甜食',30),
+	(NULL, '萨赫蛋糕','甜食',30),
+	(NULL, '红茶','饮料',5),
+	(NULL, '咖啡','饮料',5);
+	
+SELECT * FROM menu;

@@ -2,8 +2,10 @@ package mhl.view;
 
 import mhl.domain.DiningTable;
 import mhl.domain.Employee;
+import mhl.domain.Menu;
 import mhl.service.DiningTableService;
 import mhl.service.EmployeeService;
+import mhl.service.MenuService;
 import mhl.utils.ScanningUtility;
 
 import java.util.List;
@@ -13,8 +15,10 @@ import java.util.List;
  */
 public class MHLView {
     private boolean loop = true;
+
     private EmployeeService employeeService = new EmployeeService();
     private DiningTableService diningTableService = new DiningTableService();
+    private MenuService menuService = new MenuService();
 
     public static void main(String[] args) {
         new MHLView().mainMenu();
@@ -59,7 +63,7 @@ public class MHLView {
                                 orderDiningTable();
                                 break;
                             case "3":
-                                System.out.println("\t\t\t3 显示所有菜品");
+                                showMenu();
                                 break;
                             case "4":
                                 System.out.println("\t\t\t4 点餐服务");
@@ -136,6 +140,17 @@ public class MHLView {
         } else {
             System.out.println("===============预定失败===================");
         }
+    }
+
+    private void showMenu() {
+        List<Menu> dishes = menuService.getAllDish();
+        System.out.println("菜品编号\t\t菜品名\t\t类别\t\t\t价格");
+
+        for (Menu dish : dishes) {
+            System.out.println(dish);
+        }
+
+        System.out.println("===============显示完毕===================");
 
     }
 }
