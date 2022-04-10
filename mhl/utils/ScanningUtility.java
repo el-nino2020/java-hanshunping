@@ -126,10 +126,10 @@ public class ScanningUtility {
      * 功能：读取键盘输入的确认选项，Y或N
      * 将小的功能，封装到一个方法中.
      *
-     * @return Y或N
+     * @return 'Y'或'N'
      */
     public static char readConfirmSelection() {
-        System.out.println("请输入你的选择(Y/N): 请小心选择");
+        System.out.print("请确认你的选择(Y/N): ");
         char c;
         for (; ; ) {//无限循环
             //在这里，将接受到字符，转成了大写字母
@@ -139,7 +139,7 @@ public class ScanningUtility {
             if (c == 'Y' || c == 'N') {
                 break;
             } else {
-                System.out.print("选择错误，请重新输入：");
+                System.out.print("输入错误，请重新输入：");
             }
         }
         return c;
