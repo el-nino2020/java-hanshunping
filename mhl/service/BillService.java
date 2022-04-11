@@ -1,13 +1,16 @@
 package mhl.service;
 
 import mhl.dao.BillDAO;
+import mhl.dao.BillEnhancedDAO;
 import mhl.domain.Bill;
+import mhl.domain.BillEnhanced;
 
 import java.util.List;
 import java.util.UUID;
 
 public class BillService {
     private BillDAO billDAO = new BillDAO();
+    private BillEnhancedDAO billEnhancedDAO = new BillEnhancedDAO();
     private DiningTableService diningTableService = new DiningTableService();
 
 
@@ -39,6 +42,12 @@ public class BillService {
         return billDAO.queryMultiRow(sql, Bill.class);
     }
 
+    public List<BillEnhanced> getAllBill2() {
+        String sql = "select bill.* ,name from bill, menu where menuId = menu.id;";
+        return billEnhancedDAO.queryMultiRow(sql, BillEnhanced.class);
+    }
+
+
     /**
      * 查看某个餐桌是否有未结账的账单
      *
@@ -57,7 +66,7 @@ public class BillService {
      * (2) 将dining_table表中tableId的餐桌状态初始化
      *
      * @param tableId 需要结账的餐桌号
-     * @return (1)和(2)都成功才返回true,否则返回false
+     * @return (1)和(2)都成功才返回true, 否则返回false
      */
     public boolean payBill(int tableId) {
         String sql = "update bill set state = '已结账' where tableId = ?";

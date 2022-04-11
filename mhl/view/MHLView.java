@@ -1,9 +1,6 @@
 package mhl.view;
 
-import mhl.domain.Bill;
-import mhl.domain.DiningTable;
-import mhl.domain.Employee;
-import mhl.domain.Menu;
+import mhl.domain.*;
 import mhl.service.BillService;
 import mhl.service.DiningTableService;
 import mhl.service.EmployeeService;
@@ -72,7 +69,7 @@ public class MHLView {
                                 orderMenu();
                                 break;
                             case "5":
-                                showBill();
+                                showBill2();
                                 break;
                             case "6":
                                 payBill();
@@ -213,11 +210,26 @@ public class MHLView {
 
     }
 
+    @Deprecated
     private void showBill() {
         List<Bill> bills = billService.getAllBill();
         System.out.println("编号\t\t菜单号\t\t菜品量\t\t金额\t\t\t桌号\t\t日期\t\t\t\t\t\t状态");
 
         for (Bill bill : bills) {
+            System.out.println(bill);
+        }
+        System.out.println("===============显示完毕===================");
+
+    }
+
+    /**
+     * 比showBill()多显示菜品名
+     */
+    private void showBill2() {
+        List<BillEnhanced> bills = billService.getAllBill2();
+        System.out.println("编号\t\t菜单号\t菜品名\t\t菜品量\t金额\t\t桌号\t\t日期\t\t\t\t\t\t状态");
+
+        for (BillEnhanced bill : bills) {
             System.out.println(bill);
         }
         System.out.println("===============显示完毕===================");
