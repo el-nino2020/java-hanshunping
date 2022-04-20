@@ -13,7 +13,7 @@ public class Bill {
     private Integer num;
     private Double money;
     private Integer tableId;
-    //这里不能使用Date，会报错，残念です
+    //这里不能使用Date类，而且使用LocalDateTime这个第三代日期类效果也更好
     private LocalDateTime billDate;
     private String state;
 
